@@ -26,11 +26,11 @@ bool  check_convert(std::string& str)
 {
       int   flag = 0;
       int   flag1= 0;
-      bool casting_char(std::string &str, int *flag);
+      bool casting_char(std::string &str, int flag);
       bool check_string(std::string &str);
-      bool casting_int(std::string &str, int *flag);
-      bool casting_float(std::string &str, int *flag);
-      bool casting_double(std::string &str, int *flag);
+      bool casting_int(std::string &str, int flag);
+      bool casting_float(std::string &str, int flag, int flag1);
+      bool casting_double(std::string &str, int flag);
 
 
       for(int i = 0; str[i]; i++)
@@ -42,33 +42,41 @@ bool  check_convert(std::string& str)
                   return (0);
             }
       }
-      if (str == "+" || str == "-")
+      if (str == "+" || str == "-" || str == "-nan")
       return (false);
       flag = check_literal(str);
       if (flag == -1) {
             return (0);
       }
-      casting_char(str, &flag);
-      casting_int(str, &flag);
-      casting_float(str, &flag);
-      casting_double(str, &flag);
+      if (flag != 2) {
+      for(int i = 1; str[i]; i++) {
+            if (str[i] <= '0' || str[i] >= '9')
+                  return (false);
+      }
+      }
+      casting_char(str, flag);
+      casting_int(str, flag);
+      casting_float(str, flag, flag1);
+      casting_double(str, flag);
       return (true);
 }
 
+
 int is_special_literal(const std::string& str) {
       const char* special_literals[] = {
-          "nan", "nanf", "inf", "+inf", "inff", "+inff", "-inf", "-inff"
+          "nan", "nanf", "inf", "+inf", "inff", "+inff", "-inf", "-inff" 
       };
       for (size_t i = 0; i < sizeof(special_literals)/sizeof(special_literals[0]); ++i) {
           if (str == special_literals[i]) {
-              return (true);
+            return (2);
           }
       }
       try {
             char *endptr;
             double value = std::strtod(str.c_str(), &endptr);
             if (endptr != str.c_str()) {
-                  if (std::isnan(value) || std::isinf(value))
+                  if (value > std::numeric_limits<double>::max() || 
+                  value < -std::numeric_limits<double>::max())
                         return (-1);
             }
       }
@@ -78,26 +86,21 @@ int is_special_literal(const std::string& str) {
       return (false);
   }
   
-int check_literal(std::string &str) {
-      // 특수 리터럴 체크
-      
-      int i = is_special_literal(str);
+int check_literal(std::string &str) {      
+     int i = is_special_literal(str);
       if (i == -1)
             return -1;
- // 무한대나 NaN 플래그
-      // 문자 리터럴 체크 
       if (str.length() == 3 && str[0] == '\'' && str[2] == '\'') {
-          return 3;  // 문자 리터럴 플래그
+          return (3);
       }
-      
-      return 1;  // 일반 숫자 리터럴
-  }
+      return (i);
+}
   
-bool  casting_char(std::string& str, int *flag)
+bool  casting_char(std::string& str, int flag)
 {
       
       std::cout<<"char : ";
-      if (*flag == 2) {
+      if (flag == 2) {
                   std::cout<<"impossible"<<std::endl;
                   return (0);
       }
@@ -112,7 +115,7 @@ bool  casting_char(std::string& str, int *flag)
                   std::cout<<"impossible"<<std::endl;
                   return (0);
             }
-            else if(isprint(value)) {
+            else if(value >= -128 && value <= 127 && isprint(value)) {
                   std::cout<<"'"<<static_cast<char>(value)<<"'"<<std::endl;
                   return (0);
             }
@@ -126,11 +129,11 @@ bool  casting_char(std::string& str, int *flag)
       return (0);
 
 }
-bool  casting_int(std::string& str, int *flag)
+bool  casting_int(std::string& str, int flag)
 {
 
       std::cout<<"int : ";
-      if (*flag == 2) {
+      if (flag == 2) {
             std::cout<<"impossible"<<std::endl;
             return (false);
       }
@@ -161,12 +164,16 @@ bool  casting_int(std::string& str, int *flag)
       return (true);
 }
 
-bool  casting_float(std::string& str, int *flag)
+bool  casting_float(std::string& str, int flag, int flag1)
 {
       std::cout<<"Float :";
-      if (*flag == 2) {
+      if (flag == 2) {
             if (str == "nan" || str == "nanf") {
             std::cout<<"nanf"<<std::endl;
+            return (true);
+      }
+      else if (str == "inf") {
+            std::cout<<"inff"<<std::endl;
             return (true);
       }
       else if (str == "+inf" || str == "+inff") {
@@ -188,9 +195,13 @@ bool  casting_float(std::string& str, int *flag)
       }
       if (str.length() == 'f' && str[0] != 'f')
             flag2 = 1;
-      if (str.length() == 3 && str[0] == '\'' && str[2] == '\'') {
+      if ((str.length() == 3 && str[0] == '\'' && str[2] == '\'')) {
             float c = str[1];
             std::cout<<c<<".0f"<<std::endl;
+            return (0);
+      }
+      if (str.length() == 1 && str[0] == '0') {
+            std::cout<<str[0]<<".0f"<<std::endl;
             return (0);
       }
       if (str.length() && flag2 > 1) {
@@ -198,7 +209,12 @@ bool  casting_float(std::string& str, int *flag)
             return (false);
       }
       if (float float_value = static_cast<int>(value)) {
+            if (flag1 += 1) {
+                  std::cout<<value<<"0f"<<std::endl;
+                  return (true);
+            }
             std::cout<<value<<".0f"<<std::endl;
+            return (true);
       }
       else {
             std::cout<<std::fixed;
@@ -207,18 +223,24 @@ bool  casting_float(std::string& str, int *flag)
                   int   precision = str.length() - decimal_pos - 1;
                   std::cout<<std::setprecision(precision)<<value<<"f"<<std::endl;
             }
-            if (flag2 == 1)
+            if (flag2 == 1) {
                   std::cout<<"f"<<std::endl;
+                  return (true);
+            }
       }
+      std::cout<<"check index"<<std::endl;
       return (true);
-      //지수 표기법(E-notation): 1.23e+2, 7.89E-5 등    
 }
-bool  casting_double(std::string& str, int *flag)
+bool  casting_double(std::string& str, int flag)
 {
       std::cout<<"double :";
-      if (*flag == 2) {
+      if (flag == 2) {
             if (str == "nan" || str == "nanf") {
             std::cout<<"nan"<<std::endl;
+            return (true);
+      }
+      else if (str == "inf") {
+            std::cout<<"inf"<<std::endl;
             return (true);
       }
       else if (str == "+inf" || str == "+inff") {
@@ -245,14 +267,19 @@ bool  casting_double(std::string& str, int *flag)
       if (temp.length() == 3 && str[0] == '\'' && str[2] == '\'') {
             double c = str[1];
             std::cout<<c<<".0"<<std::endl;
-            return (0);
+            return (true);
       }
-      if ((endptr == temp.c_str() || *endptr != '\0')) {
+      if ((endptr == temp.c_str() || *endptr != '\0') && flag != 0) {
             std::cout<<"not number"<<std::endl;
             return (false);
       }
       if (double double_value = static_cast<int>(value)) {
             std::cout<<value<<".0"<<std::endl;
+            return (true);
+      }
+      if (str.length() == 1 && str[0] == '0') {
+            std::cout<<str[0]<<".0"<<std::endl;
+            return (true);
       }
       else {
             std::cout<<std::fixed;
@@ -261,7 +288,9 @@ bool  casting_double(std::string& str, int *flag)
                   int   precision = temp.length() - decimal_pos - 1;
                   std::cout<<std::setprecision(precision);
                   std::cout<<value<<std::endl;
+                  return (true);
             }
       }
+      std::cout<<"check index"<<std::endl;
       return (true);
 }
