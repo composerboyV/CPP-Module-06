@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Data.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junkwak <junkwak@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-04-22 01:48:07 by junkwak           #+#    #+#             */
-/*   Updated: 2025-04-22 01:48:07 by junkwak          ###   ########.fr       */
+/*   Created: 2025-04-24 06:04:11 by junkwak           #+#    #+#             */
+/*   Updated: 2025-04-24 06:04:11 by junkwak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScalarConverter.hpp"
-#include <iostream>
+#ifndef     DATA_HPP
+# define    DATA_HPP
 
-int     main(int argc, char **argv)
+#include<iostream>
+
+struct Data
 {
-	if (argc != 2) {
-	std::cout<<"Check argc"<<std::endl;
-		return (0);
-	}
-	std::string input(argv[1]);
-	ScalarConverter::convert(input);
-	return (0);
-}
+      std::string text;
+      int   value;
+
+};
+
+
+#endif

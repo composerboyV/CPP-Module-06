@@ -1,40 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ScalarConverter.cpp                                :+:      :+:    :+:   */
+/*   Serializer.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junkwak <junkwak@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-04-22 01:15:06 by junkwak           #+#    #+#             */
-/*   Updated: 2025-04-22 01:15:06 by junkwak          ###   ########.fr       */
+/*   Created: 2025-04-23 07:21:59 by junkwak           #+#    #+#             */
+/*   Updated: 2025-04-23 07:21:59 by junkwak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScalarConverter.hpp"
+#include "Serializer.hpp"
+#include "Data.hpp"
 
-ScalarConverter::ScalarConverter(void)
+Serializer::Serializer(void)
 {
 }
 
-ScalarConverter::~ScalarConverter()
+Serializer::~Serializer()
 {
 }
 
-ScalarConverter::ScalarConverter(const ScalarConverter& other) 
+Serializer::Serializer(const Serializer& other)
 {
       *this = other;
 }
-
-ScalarConverter& ScalarConverter::operator=(const ScalarConverter other) 
+Serializer& Serializer::operator=(const Serializer& other)
 {
-      if (this != &other) {
+      if (this != &other)
+      {
             *this = other;
       }
       return (*this);
 }
 
-void    ScalarConverter::convert(std::string& str)
+uintptr_t   Serializer::serialize(Data* ptr)
 {
-      if (check_convert(str) == false)
-            std::cout<<"Errorrrrr"<<std::endl;
+      return (reinterpret_cast<uintptr_t>(ptr));
+}
+
+Data* Serializer::deserialize(uintptr_t raw)
+{
+      return (reinterpret_cast<Data*>(raw));
 }

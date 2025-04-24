@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   etc.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junkwak <junkwak@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-04-22 01:48:07 by junkwak           #+#    #+#             */
-/*   Updated: 2025-04-22 01:48:07 by junkwak          ###   ########.fr       */
+/*   Created: 2025-04-24 07:55:28 by junkwak           #+#    #+#             */
+/*   Updated: 2025-04-24 07:55:28 by junkwak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScalarConverter.hpp"
+#ifndef     ETC_HPP
+# define    ETC_HPP
+
+#include "Base.hpp"
+#include "A.hpp"
+#include "B.hpp"
+#include "C.hpp"
+
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
 
-int     main(int argc, char **argv)
-{
-	if (argc != 2) {
-	std::cout<<"Check argc"<<std::endl;
-		return (0);
-	}
-	std::string input(argv[1]);
-	ScalarConverter::convert(input);
-	return (0);
-}
+
+Base *generate(void);
+void  identify(Base* p);
+void  idenitfy(Base& p);
+
+#endif

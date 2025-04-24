@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Base.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junkwak <junkwak@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-04-22 01:48:07 by junkwak           #+#    #+#             */
-/*   Updated: 2025-04-22 01:48:07 by junkwak          ###   ########.fr       */
+/*   Created: 2025-04-24 07:04:35 by junkwak           #+#    #+#             */
+/*   Updated: 2025-04-24 07:04:35 by junkwak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScalarConverter.hpp"
-#include <iostream>
+#ifndef     BASE_HPP
+#define     BASE_HPP
 
-int     main(int argc, char **argv)
+
+class Base
 {
-	if (argc != 2) {
-	std::cout<<"Check argc"<<std::endl;
-		return (0);
-	}
-	std::string input(argv[1]);
-	ScalarConverter::convert(input);
-	return (0);
-}
+public:
+      virtual ~Base();
+};
+
+
+#endif

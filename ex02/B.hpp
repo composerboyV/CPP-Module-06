@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   B.hpp                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junkwak <junkwak@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-04-22 01:48:07 by junkwak           #+#    #+#             */
-/*   Updated: 2025-04-22 01:48:07 by junkwak          ###   ########.fr       */
+/*   Created: 2025-04-24 07:20:59 by junkwak           #+#    #+#             */
+/*   Updated: 2025-04-24 07:20:59 by junkwak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScalarConverter.hpp"
-#include <iostream>
+#ifndef     B_HPP
+# define    B_HPP
 
-int     main(int argc, char **argv)
+#include "Base.hpp"
+
+class B : public Base
 {
-	if (argc != 2) {
-	std::cout<<"Check argc"<<std::endl;
-		return (0);
-	}
-	std::string input(argv[1]);
-	ScalarConverter::convert(input);
-	return (0);
-}
+public:
+      ~B();
+};
+
+
+
+#endif
