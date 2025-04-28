@@ -29,7 +29,7 @@ bool  check_convert(std::string& str)
       bool casting_char(std::string &str, int flag);
       bool check_string(std::string &str);
       bool casting_int(std::string &str, int flag);
-      bool casting_float(std::string &str, int flag, int flag1);
+      bool casting_float(std::string &str, int flag);
       bool casting_double(std::string &str, int flag);
 
 
@@ -43,20 +43,31 @@ bool  check_convert(std::string& str)
             }
       }
       if (str == "+" || str == "-" || str == "-nan")
-      return (false);
+            return (false);
+      for(int i = 0; str[i]; i++)
+      {
+            if (str[i] == 'i') {
+                  if (str[i + 1] == 'n') {
+                        if (str[i + 2] == 'f')
+                              break ;
+                  }
+                  return (false);
+            }
+            if (str[i] == 'n') {
+                  if (str[i + 1] == 'a') {
+                        if (str[i + 2] == 'n')
+                              break ;
+                  }
+                  return (false);
+            }
+      }
       flag = check_literal(str);
       if (flag == -1) {
             return (0);
       }
-      if (flag != 2) {
-      for(int i = 1; str[i]; i++) {
-            if (str[i] <= '0' || str[i] >= '9')
-                  return (false);
-      }
-      }
       casting_char(str, flag);
       casting_int(str, flag);
-      casting_float(str, flag, flag1);
+      casting_float(str, flag);
       casting_double(str, flag);
       return (true);
 }
@@ -154,7 +165,7 @@ bool  casting_int(std::string& str, int flag)
                   std::cout<<"impossible"<<std::endl;
                   return (false);
             }
-      std::cout<<"'"<<static_cast<int>(value)<<"'"<<std::endl;
+      std::cout<<static_cast<int>(value)<<std::endl;
       }
 
       catch(...) {
@@ -164,7 +175,7 @@ bool  casting_int(std::string& str, int flag)
       return (true);
 }
 
-bool  casting_float(std::string& str, int flag, int flag1)
+bool  casting_float(std::string& str, int flag)
 {
       std::cout<<"Float :";
       if (flag == 2) {
@@ -209,10 +220,8 @@ bool  casting_float(std::string& str, int flag, int flag1)
             return (false);
       }
       if (float float_value = static_cast<int>(value)) {
-            if (flag1 += 1) {
-                  std::cout<<value<<"0f"<<std::endl;
-                  return (true);
-            }
+            // flag1 += 1;
+            std::cout<<"value is is is "<<float_value<<std::endl;
             std::cout<<value<<".0f"<<std::endl;
             return (true);
       }
