@@ -53,12 +53,28 @@ bool  check_convert(std::string& str)
                   }
                   return (false);
             }
-            if (str[i] == 'n') {
+            else if (str[i] == 'I') {
+                  if (str[i + 1] != '\0')
+                        return (false);
+                  break ;
+            }
+            else if (str[i] == 'n') {
                   if (str[i + 1] == 'a') {
                         if (str[i + 2] == 'n')
                               break ;
                   }
                   return (false);
+            }
+            else if (str[i] == 'N') {
+                  if (str[i + 1] != '\0')
+                        return (false);
+                  break ;
+            }
+            else if (isalpha(str[i])) {
+                  if (isalpha(str[i + 1])) {
+                        std::cout<<"check argv!"<<std::endl;
+                        return (5);
+                  }
             }
       }
       flag = check_literal(str);
@@ -148,8 +164,8 @@ bool  casting_int(std::string& str, int flag)
             std::cout<<"impossible"<<std::endl;
             return (false);
       }
-      if (str.length() == 3 && str[0] == '\'' && str[2] == '\'') {
-            int c = str[1];
+      if (str.length() == 1 && isalpha(str[0])) {
+            int c = str[0];
             std::cout<<c<<std::endl;
             return (0);
       }
@@ -206,12 +222,12 @@ bool  casting_float(std::string& str, int flag)
       }
       if (str.length() == 'f' && str[0] != 'f')
             flag2 = 1;
-      if ((str.length() == 3 && str[0] == '\'' && str[2] == '\'')) {
-            float c = str[1];
+      if ((str.length() == 1 && isalpha(str[0]))) {
+            float c = str[0];
             std::cout<<c<<".0f"<<std::endl;
             return (0);
       }
-      if (str.length() == 1 && str[0] == '0') {
+      if (str.length() == 1 && isdigit(str[0])) {
             std::cout<<str[0]<<".0f"<<std::endl;
             return (0);
       }
@@ -219,9 +235,7 @@ bool  casting_float(std::string& str, int flag)
             std::cout<<"not number"<<std::endl;
             return (false);
       }
-      if (float float_value = static_cast<int>(value)) {
-            // flag1 += 1;
-            std::cout<<"value is is is "<<float_value<<std::endl;
+      if (value == static_cast<int>(value)) {
             std::cout<<value<<".0f"<<std::endl;
             return (true);
       }
@@ -230,7 +244,10 @@ bool  casting_float(std::string& str, int flag)
             size_t decimal_pos = str.find('.');
             if (decimal_pos != std::string::npos) {
                   int   precision = str.length() - decimal_pos - 1;
+                  if (str[str.length() - 1] == 'f')
+                        precision--;
                   std::cout<<std::setprecision(precision)<<value<<"f"<<std::endl;
+                  return (true);
             }
             if (flag2 == 1) {
                   std::cout<<"f"<<std::endl;
@@ -273,8 +290,8 @@ bool  casting_double(std::string& str, int flag)
             std::cout<<"over Flow!!"<<std::endl;
             return (false);
       }
-      if (temp.length() == 3 && str[0] == '\'' && str[2] == '\'') {
-            double c = str[1];
+      if (temp.length() == 1 && (isalpha(str[0]) || isdigit(str[0]))) {
+            double c = str[0];
             std::cout<<c<<".0"<<std::endl;
             return (true);
       }
@@ -282,12 +299,8 @@ bool  casting_double(std::string& str, int flag)
             std::cout<<"not number"<<std::endl;
             return (false);
       }
-      if (double double_value = static_cast<int>(value)) {
+      if (value == static_cast<int>(value)) {
             std::cout<<value<<".0"<<std::endl;
-            return (true);
-      }
-      if (str.length() == 1 && str[0] == '0') {
-            std::cout<<str[0]<<".0"<<std::endl;
             return (true);
       }
       else {
@@ -295,10 +308,16 @@ bool  casting_double(std::string& str, int flag)
             size_t decimal_pos = temp.find('.');
             if (decimal_pos != std::string::npos) {
                   int   precision = temp.length() - decimal_pos - 1;
+                  if (str[str.length() - 1] == 'f')
+                        precision--;
                   std::cout<<std::setprecision(precision);
                   std::cout<<value<<std::endl;
                   return (true);
             }
+            else {
+                  std::cout<<value<<std::endl;
+                  return (true);
+      }
       }
       std::cout<<"check index"<<std::endl;
       return (true);
